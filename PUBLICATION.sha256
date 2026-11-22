@@ -1,12 +1,12 @@
 # AgentForge publication manifest
-# created: 2026-11-22T05:47:11+00:00
+# created: 2026-11-22T05:52:23+00:00
 # payload_files: 141
-# payload_bytes: 2261254
+# payload_bytes: 2261332
 # sha256  bytes  path
 6474b64872513688eeab4ccef3bc90400c43721c52d0aaac3977506e099c788c  94  .dockerignore
 c58b9a275e53acf3d8d90d76b9911aef706440b910925429ec1afe86825d8b0d  579  .env.example
 2ad081d98f8360ca7a16367b8110ced4bebbc20b9a00bf44649f9ea88ed5dd18  137  .gitattributes
-fb450f0b374515e668473e2054fd1549b830dae10934a2fffbd2bb96d0c69b5e  1785  .github/workflows/ci.yml
+086df9ded4b6eb506f62f16efb10f9134e6c0c5f323ed03ffdbf31adb44ea362  1863  .github/workflows/ci.yml
 fab0aa8a86de53ea14d00c6d2722ca13477efc21dac23c1d92aa55386395a9be  218  .gitignore
 e969f6a474f860b252832ba77c14082df281e1c3ee9f1aad4db17cc59ce79073  208  CHANGELOG.md
 5390c9988c6684d28fe10591f92f17f3ab9291b3a0f50f1420936bc0910ae2b1  1218  PROJECT_STATUS.md

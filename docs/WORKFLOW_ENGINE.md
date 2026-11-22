@@ -1,0 +1,13 @@
+# Workflow engine
+
+The engine validates one trigger, unique IDs, supported node types, allowed output ports, connected graph topology, and each Pydantic configuration. Kahn's traversal computes order and rejects cycles. Execution freezes the draft revision used for the run. The worker consumes only queued IDs and loads their stored versions.
+
+Each completed node stores one output port and a JSON object. Downstream nodes receive only checkpoints from matching active edges. An inactive node is persisted as skipped. Most nodes consume the first active input in edge order. Merge receives and combines every active input. Exact references such as `{{ nodes.n2.output.records }}` resolve only to completed upstream outputs and preserve JSON types. Paths traverse object fields and list offsets.
+
+Local execution is serial. Transient I/O failures and timeouts may retry with exponential backoff, bounded by graph and node deadlines. Validation and rule errors fail immediately. Cancellation is cooperative at checkpoints and while awaiting async nodes. Synchronous library operations have input bounds and may complete before cancellation can be processed. Restarting requeues interrupted work and reuses successful and skipped checkpoints. Approval suspension keeps the worker free and excludes waiting time from the remaining execution budget. The first valid decision wins.
+
+Artifact writes use a deterministic execution and node location with an atomic rename before the matching database checkpoint. An interruption can leave an unindexed file. Retrying the same replayable step overwrites that location. External POST requires administrator opt-in and an immediately preceding approved branch. Its response can be ambiguous after disconnect or process exit. Such a step cannot replay automatically, and workflows containing it cannot use retry-run. Exactly-once external delivery depends on the remote API.
+
+Downloads compare the file size and SHA-256 with the saved checkpoint. A missing file returns 404 and changed content returns 409. The runner reads only the checkpoints needed for edges and explicit output references, and loads the complete timeline for PDF reports.
+
+With the distributed executor, PostgreSQL persists every state transition and Redis transports execution IDs with at-least-once semantics. An owning Celery worker recovers a stranded run from durable checkpoints. Terminal and waiting runs are harmless on duplicate delivery. A lost database session releases the worker lock. External side effects can still be ambiguous when a worker or remote service disconnects.

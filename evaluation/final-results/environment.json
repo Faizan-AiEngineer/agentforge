@@ -1,0 +1,17 @@
+{
+  "system": "Windows-11-10.0.26100-SP0",
+  "architecture": "AMD64",
+  "cpu": "Intel64 Family 6 Model 142 Stepping 9, GenuineIntel",
+  "cpu_count": 4,
+  "python": "3.13.2",
+  "repeat": 3,
+  "seed": 42,
+  "dependencies": {
+    "fastapi": "0.115.0",
+    "sqlalchemy": "2.1.8",
+    "pydantic": "2.8.2",
+    "openpyxl": "3.1.5"
+  },
+  "method": "SQLite queue and single local worker in FastAPI TestClient",
+  "event_loop": "winloop"
+}

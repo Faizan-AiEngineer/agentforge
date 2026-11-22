@@ -1,0 +1,23 @@
+{
+  "APPROVE": {
+    "status": "SUCCEEDED",
+    "duplicate_status": 409,
+    "artifact": "approved.json",
+    "resume_ms": 364.622,
+    "passed": true
+  },
+  "REJECT": {
+    "status": "SUCCEEDED",
+    "duplicate_status": 409,
+    "artifact": "review.json",
+    "resume_ms": 401.445,
+    "passed": true
+  },
+  "REQUEST_CHANGES": {
+    "status": "SUCCEEDED",
+    "duplicate_status": 409,
+    "artifact": "review.json",
+    "resume_ms": 308.604,
+    "passed": true
+  }
+}

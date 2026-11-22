@@ -1,0 +1,13 @@
+{
+  "schedule": {
+    "status": "SUCCEEDED",
+    "source": "schedule",
+    "error": null
+  },
+  "file": {
+    "status": "SUCCEEDED",
+    "source": "file",
+    "error": null
+  },
+  "file_disabled": true
+}

@@ -1,0 +1,11 @@
+{
+  "allowlist": true,
+  "private_ipv4": true,
+  "file_traversal": true,
+  "windows_device": true,
+  "foreign_origin": true,
+  "large_payload": true,
+  "invalid_graph": true,
+  "invalid_signature": true,
+  "redacted_payload": true
+}

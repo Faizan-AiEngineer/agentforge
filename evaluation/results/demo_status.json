@@ -1,0 +1,52 @@
+[
+  {
+    "Workflow": "api-to-csv",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "csv-cleanup",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "daily-report",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "lead-excel",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "website-extraction",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "ai-document",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "approval-routing",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "data-quality",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "price-monitor",
+    "Status": "SUCCEEDED",
+    "Error": null
+  },
+  {
+    "Workflow": "pending-approval",
+    "Status": "WAITING_APPROVAL",
+    "Error": null
+  }
+]

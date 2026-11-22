@@ -1,0 +1,12 @@
+{
+  "api-to-csv": "SUCCEEDED",
+  "csv-cleanup": "SUCCEEDED",
+  "daily-report": "SUCCEEDED",
+  "lead-excel": "SUCCEEDED",
+  "website-extraction": "SUCCEEDED",
+  "ai-document": "SUCCEEDED",
+  "approval-routing": "SUCCEEDED",
+  "data-quality": "SUCCEEDED",
+  "price-monitor": "SUCCEEDED",
+  "pending-approval": "WAITING_APPROVAL"
+}

@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-22",
+  "platform": "Windows-11-10.0.26100-SP0",
+  "python": "3.13.2",
+  "backend": {
+    "tests": 63,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 63,
+    "exit_code": 0,
+    "blocked": 0,
+    "elapsed_seconds": 155.857,
+    "event_loop": "winloop",
+    "pytest_seconds": 140.85
+  },
+  "first_backend_attempt": {
+    "passed": 62,
+    "failed": 1,
+    "skipped": 0,
+    "reason": "Browser fixture exceeded the node deadline"
+  },
+  "frontend": {
+    "node": "26.13.1",
+    "npm": "11.20.0",
+    "vitest_passed": 3,
+    "vitest_failed": 0,
+    "typescript": "passed",
+    "production_build": "passed",
+    "build_seconds": 27.83
+  },
+  "ruff": "passed",
+  "database": {
+    "dialect": "sqlite",
+    "migration": "0002",
+    "integrity_check": "ok"
+  },
+  "browser": {
+    "browser": "Chrome",
+    "transport": "loopback HTTP",
+    "workflow_journey": "passed",
+    "download": "native CSV file verified",
+    "pages_checked": 12,
+    "mobile_navigation": "passed"
+  },
+  "demo_results": {
+    "api-to-csv": "SUCCEEDED",
+    "csv-cleanup": "SUCCEEDED",
+    "daily-report": "SUCCEEDED",
+    "lead-excel": "SUCCEEDED",
+    "website-extraction": "SUCCEEDED",
+    "ai-document": "SUCCEEDED",
+    "approval-routing": "SUCCEEDED",
+    "data-quality": "SUCCEEDED",
+    "price-monitor": "SUCCEEDED",
+    "pending-approval": "WAITING_APPROVAL"
+  },
+  "python_audit": {
+    "resolved": 54,
+    "skipped": 0,
+    "known_advisories": 0
+  },
+  "npm_production_audit": {
+    "known_advisories": 0
+  }
+}

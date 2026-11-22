@@ -1,0 +1,65 @@
+[
+  {
+    "case": "good",
+    "expected_valid": true,
+    "valid": true,
+    "errors": [],
+    "duration_ms": 0.177
+  },
+  {
+    "case": "missing_endpoint",
+    "expected_valid": false,
+    "valid": false,
+    "errors": [
+      "Duplicate edge or missing endpoint: n0 \u2192 missing",
+      "Values is disconnected from the trigger"
+    ],
+    "duration_ms": 0.099
+  },
+  {
+    "case": "cycle",
+    "expected_valid": false,
+    "valid": false,
+    "errors": [
+      "Trigger nodes cannot receive incoming edges",
+      "Graph contains a cycle"
+    ],
+    "duration_ms": 0.095
+  },
+  {
+    "case": "invalid_port",
+    "expected_valid": false,
+    "valid": false,
+    "errors": [
+      "Unknown port bad on n0"
+    ],
+    "duration_ms": 0.1
+  },
+  {
+    "case": "bad_config",
+    "expected_valid": false,
+    "valid": false,
+    "errors": [
+      "Delay configuration seconds: Input should be less than or equal to 30"
+    ],
+    "duration_ms": 6.902
+  },
+  {
+    "case": "bad_node",
+    "expected_valid": false,
+    "valid": false,
+    "errors": [
+      "Unsupported node type: missing"
+    ],
+    "duration_ms": 0.135
+  },
+  {
+    "case": "bad_reference",
+    "expected_valid": false,
+    "valid": false,
+    "errors": [
+      "Values references missing, which must be upstream"
+    ],
+    "duration_ms": 0.165
+  }
+]

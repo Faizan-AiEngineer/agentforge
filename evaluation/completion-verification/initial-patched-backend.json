@@ -1,0 +1,11 @@
+{
+  "tests": 63,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "passed": 62,
+  "exit_code": 1,
+  "blocked": 0,
+  "elapsed_seconds": 183.838,
+  "event_loop": "winloop"
+}

@@ -1,0 +1,247 @@
+{
+  "workflow_ms": {
+    "5": {
+      "samples": 3,
+      "mean": 736.801,
+      "median": 757.71,
+      "minimum": 686.569,
+      "maximum": 766.125
+    },
+    "10": {
+      "samples": 3,
+      "mean": 1207.581,
+      "median": 1181.793,
+      "minimum": 1102.95,
+      "maximum": 1338.0
+    },
+    "25": {
+      "samples": 3,
+      "mean": 4406.933,
+      "median": 5497.956,
+      "minimum": 1850.884,
+      "maximum": 5871.96
+    },
+    "50": {
+      "samples": 3,
+      "mean": 7302.844,
+      "median": 7701.486,
+      "minimum": 4488.974,
+      "maximum": 9718.071
+    },
+    "100": {
+      "samples": 3,
+      "mean": 10748.934,
+      "median": 11404.864,
+      "minimum": 9370.517,
+      "maximum": 11471.421
+    }
+  },
+  "bursts": {
+    "1": {
+      "throughput_per_second": {
+        "samples": 3,
+        "mean": 2.553,
+        "median": 2.578,
+        "minimum": 2.503,
+        "maximum": 2.579
+      },
+      "mean_latency_ms": {
+        "samples": 3,
+        "mean": 331.024,
+        "median": 333.828,
+        "minimum": 319.005,
+        "maximum": 340.24
+      },
+      "mean_queue_ms": {
+        "samples": 3,
+        "mean": 150.613,
+        "median": 143.505,
+        "minimum": 141.661,
+        "maximum": 166.672
+      },
+      "errors": {
+        "samples": 3,
+        "mean": 0,
+        "median": 0,
+        "minimum": 0,
+        "maximum": 0
+      }
+    },
+    "5": {
+      "throughput_per_second": {
+        "samples": 3,
+        "mean": 5.196,
+        "median": 5.45,
+        "minimum": 4.655,
+        "maximum": 5.483
+      },
+      "mean_latency_ms": {
+        "samples": 3,
+        "mean": 619.406,
+        "median": 602.23,
+        "minimum": 556.065,
+        "maximum": 699.924
+      },
+      "mean_queue_ms": {
+        "samples": 3,
+        "mean": 470.92,
+        "median": 463.596,
+        "minimum": 417.39,
+        "maximum": 531.774
+      },
+      "errors": {
+        "samples": 3,
+        "mean": 0,
+        "median": 0,
+        "minimum": 0,
+        "maximum": 0
+      }
+    },
+    "10": {
+      "throughput_per_second": {
+        "samples": 3,
+        "mean": 6.019,
+        "median": 6.219,
+        "minimum": 5.58,
+        "maximum": 6.257
+      },
+      "mean_latency_ms": {
+        "samples": 3,
+        "mean": 963.531,
+        "median": 923.076,
+        "minimum": 919.192,
+        "maximum": 1048.325
+      },
+      "mean_queue_ms": {
+        "samples": 3,
+        "mean": 823.889,
+        "median": 788.717,
+        "minimum": 785.263,
+        "maximum": 897.688
+      },
+      "errors": {
+        "samples": 3,
+        "mean": 0,
+        "median": 0,
+        "minimum": 0,
+        "maximum": 0
+      }
+    },
+    "25": {
+      "throughput_per_second": {
+        "samples": 3,
+        "mean": 5.925,
+        "median": 5.304,
+        "minimum": 5.177,
+        "maximum": 7.294
+      },
+      "mean_latency_ms": {
+        "samples": 3,
+        "mean": 2152.258,
+        "median": 2115.052,
+        "minimum": 1856.331,
+        "maximum": 2485.392
+      },
+      "mean_queue_ms": {
+        "samples": 3,
+        "mean": 1997.42,
+        "median": 1950.433,
+        "minimum": 1732.853,
+        "maximum": 2308.973
+      },
+      "errors": {
+        "samples": 3,
+        "mean": 0,
+        "median": 0,
+        "minimum": 0,
+        "maximum": 0
+      }
+    }
+  },
+  "data_ms": {
+    "1000:aggregate": {
+      "samples": 3,
+      "mean": 34.615,
+      "median": 31.383,
+      "minimum": 30.535,
+      "maximum": 41.927
+    },
+    "1000:dedupe": {
+      "samples": 3,
+      "mean": 28.056,
+      "median": 29.203,
+      "minimum": 25.43,
+      "maximum": 29.536
+    },
+    "1000:filter": {
+      "samples": 3,
+      "mean": 10.3,
+      "median": 10.271,
+      "minimum": 7.622,
+      "maximum": 13.008
+    },
+    "1000:write_csv": {
+      "samples": 3,
+      "mean": 20.735,
+      "median": 20.755,
+      "minimum": 12.95,
+      "maximum": 28.5
+    },
+    "10000:aggregate": {
+      "samples": 3,
+      "mean": 295.275,
+      "median": 294.695,
+      "minimum": 256.398,
+      "maximum": 334.732
+    },
+    "10000:dedupe": {
+      "samples": 3,
+      "mean": 226.798,
+      "median": 227.501,
+      "minimum": 203.513,
+      "maximum": 249.38
+    },
+    "10000:filter": {
+      "samples": 3,
+      "mean": 102.188,
+      "median": 107.215,
+      "minimum": 83.907,
+      "maximum": 115.441
+    },
+    "10000:write_csv": {
+      "samples": 3,
+      "mean": 109.21,
+      "median": 103.806,
+      "minimum": 101.19,
+      "maximum": 122.633
+    },
+    "100000:aggregate": {
+      "samples": 3,
+      "mean": 2192.939,
+      "median": 2266.922,
+      "minimum": 1979.805,
+      "maximum": 2332.09
+    },
+    "100000:dedupe": {
+      "samples": 3,
+      "mean": 2644.998,
+      "median": 2574.743,
+      "minimum": 2095.261,
+      "maximum": 3264.991
+    },
+    "100000:filter": {
+      "samples": 3,
+      "mean": 1836.287,
+      "median": 1635.513,
+      "minimum": 1510.821,
+      "maximum": 2362.526
+    },
+    "100000:write_csv": {
+      "samples": 3,
+      "mean": 1784.543,
+      "median": 1603.429,
+      "minimum": 1294.343,
+      "maximum": 2455.857
+    }
+  }
+}

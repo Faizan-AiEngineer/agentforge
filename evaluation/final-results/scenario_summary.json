@@ -1,0 +1,23 @@
+{
+  "retry_ms": {
+    "samples": 1,
+    "mean": 1297.188,
+    "median": 1297.188,
+    "minimum": 1297.188,
+    "maximum": 1297.188
+  },
+  "restart_ms": {
+    "samples": 1,
+    "mean": 2964.517,
+    "median": 2964.517,
+    "minimum": 2964.517,
+    "maximum": 2964.517
+  },
+  "approval_ms": {
+    "samples": 3,
+    "mean": 358.224,
+    "median": 364.622,
+    "minimum": 308.604,
+    "maximum": 401.445
+  }
+}

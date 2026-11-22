@@ -1,0 +1,27 @@
+{
+  "browser_table": {
+    "status": "SUCCEEDED",
+    "passed": true,
+    "error": null
+  },
+  "browser_text": {
+    "status": "SUCCEEDED",
+    "passed": true,
+    "error": null
+  },
+  "browser_links": {
+    "status": "SUCCEEDED",
+    "passed": true,
+    "error": null
+  },
+  "browser_capture": {
+    "status": "SUCCEEDED",
+    "passed": true,
+    "error": null
+  },
+  "invalid_selector": {
+    "status": "FAILED",
+    "error": "Selector matched no elements in the approved fixture",
+    "passed": true
+  }
+}

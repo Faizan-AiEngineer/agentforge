@@ -1,0 +1,23 @@
+{
+  "retry": {
+    "status": "SUCCEEDED",
+    "attempts": 3,
+    "artifacts": 1,
+    "duplicate_submission_reused_run": true,
+    "passed": true
+  },
+  "failure_propagation": {
+    "status": "FAILED",
+    "artifacts": 0,
+    "passed": true
+  },
+  "cancellation": {
+    "status": "CANCELLED",
+    "passed": true
+  },
+  "restart": {
+    "preserved_checkpoint": true,
+    "status": "SUCCEEDED",
+    "passed": true
+  }
+}

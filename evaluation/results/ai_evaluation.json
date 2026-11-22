@@ -1,0 +1,32 @@
+[
+  {
+    "task": "summarize",
+    "outcome": "structured_result",
+    "passed": true,
+    "duration_ms": 0.272
+  },
+  {
+    "task": "classify",
+    "outcome": "structured_result",
+    "passed": true,
+    "duration_ms": 0.059
+  },
+  {
+    "task": "extract_info",
+    "outcome": "structured_result",
+    "passed": true,
+    "duration_ms": 0.6
+  },
+  {
+    "task": "structured",
+    "outcome": "structured_result",
+    "passed": true,
+    "duration_ms": 0.108
+  },
+  {
+    "task": "structured",
+    "outcome": "unsupported_input",
+    "passed": true,
+    "duration_ms": 0.031
+  }
+]

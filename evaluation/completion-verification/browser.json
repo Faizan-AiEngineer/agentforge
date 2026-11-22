@@ -1,0 +1,11 @@
+{
+  "transport": "ASGI",
+  "browser": "chrome",
+  "workflow_journey": "VERIFIED",
+  "webhook_schedule_monitoring_and_rejection": "VERIFIED",
+  "download": {
+    "browser_bytes_verified": true,
+    "native_save": "BLOCKED",
+    "reason": "canceled"
+  }
+}

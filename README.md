@@ -47,6 +47,10 @@ The local worker, scheduler, and file watcher run in the backend process. The op
 4. Persist pending reviews and release the worker. A valid decision requeues the run and selects its branch.
 5. Record the terminal state and expose generated artifacts through the execution API. [Workflow engine](docs/WORKFLOW_ENGINE.md) · [API reference](docs/API_REFERENCE.md)
 
+## Workflow reliability
+
+Approval resumes the same pinned execution and reuses committed node checkpoints. The first valid decision wins, and a repeated decision returns HTTP 409. A replayable failed node can resume in place. Starting a new run from the pinned version creates a separate execution. An interrupted external write with an unknown outcome requires provider reconciliation. See the [reliability audit, test results, and screenshots](docs/WORKFLOW_RELIABILITY.md).
+
 ## Technology stack
 
 | Layer | Technologies |

@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "n0",
+      "type": "manual",
+      "label": "Load input data",
+      "x": 50,
+      "y": 95,
+      "config": {},
+      "timeout": 20
+    },
+    {
+      "id": "n1",
+      "type": "values",
+      "label": "Transform data",
+      "x": 295,
+      "y": 95,
+      "config": {
+        "values": {
+          "receipt": "{{ nodes.n0.output.receipt }}"
+        }
+      },
+      "timeout": 20
+    },
+    {
+      "id": "n2",
+      "type": "write_json",
+      "label": "Write output record",
+      "x": 540,
+      "y": 95,
+      "config": {
+        "filename": "output-record"
+      },
+      "timeout": 20
+    },
+    {
+      "id": "n3",
+      "type": "approval",
+      "label": "Human approval",
+      "x": 785,
+      "y": 95,
+      "config": {
+        "action": "Approve release of the report"
+      },
+      "timeout": 20
+    },
+    {
+      "id": "n4",
+      "type": "report",
+      "label": "Generate final report",
+      "x": 50,
+      "y": 280,
+      "config": {
+        "filename": "final-report"
+      },
+      "timeout": 20
+    },
+    {
+      "id": "n5",
+      "type": "datetime",
+      "label": "Complete workflow",
+      "x": 295,
+      "y": 280,
+      "config": {},
+      "timeout": 20
+    }
+  ],
+  "edges": [
+    {
+      "source": "n0",
+      "target": "n1"
+    },
+    {
+      "source": "n1",
+      "target": "n2"
+    },
+    {
+      "source": "n2",
+      "target": "n3"
+    },
+    {
+      "source": "n3",
+      "target": "n4",
+      "port": "approve"
+    },
+    {
+      "source": "n4",
+      "target": "n5"
+    }
+  ]
+}

@@ -16,7 +16,9 @@ Open [OpenAPI](http://127.0.0.1:8000/docs) on a running backend for request mode
 | GET /api/v1/templates | Preview importable definitions |
 | POST /api/v1/templates/{key}/import | Create a workflow from a template |
 | GET /api/v1/executions, /executions/{id} | Run history and graph checkpoints |
-| POST /api/v1/executions/{id}/cancel, /retry | Cancel or retry a pinned replayable run |
+| POST /api/v1/executions/{id}/cancel | Cancel an active run |
+| POST /api/v1/executions/{id}/resume | Requeue the same failed run for one additional attempt at its replayable failed node. Returns HTTP 202 or 409. |
+| POST /api/v1/executions/{id}/retry | Start a separate run from the pinned replayable workflow |
 | GET /api/v1/approvals | Pending and previous decisions |
 | POST /api/v1/approvals/{id}/decision | Record approve, reject, or request changes |
 | GET or POST /api/v1/schedules, /webhooks, /credentials | List and register definitions |

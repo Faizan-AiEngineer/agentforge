@@ -16,8 +16,9 @@ from .nodes import REGISTRY, Context
 from .security import MAX_BODY, json_size, redact, safe_path
 
 PROJECT = Path(__file__).resolve().parents[2]
-TERMINAL = {"SUCCEEDED", "FAILED", "CANCELLED", "TIMED_OUT"}
+TERMINAL = {"SUCCEEDED", "FAILED", "CANCELLED", "TIMED_OUT", "REJECTED"}
 COMPLETED_STEP = {"SUCCEEDED", "SKIPPED"}
+UNKNOWN_EXTERNAL = "External request outcome is unknown. Review the provider before starting another run."
 logger = logging.getLogger("agentforge")
 
 
@@ -129,6 +130,32 @@ def decide(session, approval, decision):
     return True
 
 
+def resumable_step(execution, definition, steps):
+    if execution.status != "FAILED":
+        return None
+    failed = [step for step in steps if step.status == "FAILED"]
+    if len(failed) != 1 or any(step.status in {"RUNNING", "WAITING_APPROVAL", "RETRYING"} for step in steps):
+        return None
+    node = next((item for item in definition["nodes"] if item["id"] == failed[0].node_id), None)
+    spec = REGISTRY.get(node["type"]) if node else None
+    return failed[0] if spec and spec.replay else None
+
+
+def resume_failed(session, execution, definition, steps):
+    step = resumable_step(execution, definition, steps)
+    if step is None:
+        return False
+    claimed = session.execute(update(Execution).where(
+        Execution.id == execution.id, Execution.status == "FAILED", Execution.ended == execution.ended,
+    ).values(status="QUEUED", ended=None, error=None, dispatch_after=None,
+             deadline=now() + definition.get("timeout", Graph.model_fields["timeout"].default))).rowcount
+    if not claimed:
+        return False
+    step.status, step.ended, step.retry_at = "RETRYING", None, None
+    audit(session, "execution.resume_requested", execution.id)
+    return True
+
+
 def prepare_root(settings):
     settings.root.mkdir(parents=True, exist_ok=True)
     for name in ("input", "artifacts"):
@@ -234,7 +261,14 @@ class Runner:
             if not await self.step(execution, nodes[identifier], incoming[identifier], ownership):
                 return
         ownership()
-        self.finish(execution.id, "SUCCEEDED")
+        routed_rejections = {edge.source for edge in graph.edges if edge.port == "reject"}
+        with self.sessions.begin() as session:
+            rejected = session.scalar(select(Approval.id).where(
+                Approval.execution_id == execution.id,
+                Approval.decision == "REJECT",
+                Approval.node_id.not_in(routed_rejections),
+            ).limit(1))
+            self.fail_transaction(session, execution.id, "REJECTED" if rejected else "SUCCEEDED", None)
 
     async def step(self, execution, node, edges, ownership):
         run_id = execution.id
@@ -263,13 +297,18 @@ class Runner:
                 return True
             if stored.status == "RUNNING" and not spec.replay:
                 stored.status, stored.ended = "FAILED", now()
-                stored.error = "External request outcome is unknown after interruption. Review the provider."
+                stored.error = UNKNOWN_EXTERNAL
                 self.fail_transaction(session, execution.id, "FAILED", stored.error)
                 return False
-            attempts = stored.attempts if stored.attempts is not None else 0
-            if stored.status in {"RUNNING", "WAITING_APPROVAL"}:
-                attempts = max(0, attempts - 1)
+            attempts = stored.attempts or 0
             retry_at = stored.retry_at
+            completing_approval = stored.status == "WAITING_APPROVAL"
+            manual_resume = stored.status == "RETRYING" and retry_at is None
+            remaining_attempts = node.retries + 1 - attempts
+            if completing_approval or manual_resume:
+                remaining_attempts = 1
+            elif stored.status == "RUNNING":
+                remaining_attempts = max(1, remaining_attempts)
             approval = session.scalar(select(Approval).where(Approval.execution_id == run_id,
                                        Approval.node_id == node.id)) if node.type == "approval" else None
             approved = (len(edges) == 1 and edges[0].port == "approve"
@@ -279,7 +318,7 @@ class Runner:
                         if node.type == "report" else [])
         if retry_at:
             await asyncio.sleep(max(0, min(retry_at, execution.deadline) - now()))
-        for attempt in range(attempts, node.retries + 1):
+        for attempt in range(remaining_attempts):
             ownership()
             if not self.running(run_id):
                 return False
@@ -291,9 +330,11 @@ class Runner:
                 if session.get(Execution, run_id, with_for_update=True).status != "RUNNING":
                     return False
                 stored = session.get(Step, key)
-                stored.status, stored.attempts, stored.retry_at = "RUNNING", attempt + 1, None
+                stored.status, stored.retry_at = "RUNNING", None
+                stored.attempts = (stored.attempts or 0) + int(not completing_approval)
                 stored.started = stored.started or now()
                 stored.inputs = redact(active, secret_values())
+            committing_result = False
             try:
                 config = spec.config.model_validate(resolve(node.config, outputs))
                 auth = None
@@ -313,15 +354,20 @@ class Runner:
                 ownership()
                 if result is None or not self.running(run_id):
                     return False
+                committing_result = True
                 return self.persist_result(execution, node, result)
             except Exception as error:
                 ownership()
                 timed_out = isinstance(error, TimeoutError)
                 status = "TIMED_OUT" if timed_out else "FAILED"
-                message = ("Node exceeded its deadline" if timed_out else self.error_message(error))
-                retry = attempt < node.retries and spec.replay and (
+                message = "Node exceeded its deadline" if timed_out else self.error_message(error)
+                if not spec.replay and timed_out:
+                    message += ". " + UNKNOWN_EXTERNAL
+                elif not spec.replay and committing_result:
+                    message = UNKNOWN_EXTERNAL
+                retry = attempt + 1 < remaining_attempts and spec.replay and (
                     timed_out or isinstance(error, (OSError, RuntimeError)))
-                when = now() + (0.25 * 2**attempt) if retry else None
+                when = now() + (0.25 * 2 ** (attempts + attempt)) if retry else None
                 with self.sessions.begin() as session:
                     if session.get(Execution, run_id, with_for_update=True).status != "RUNNING":
                         return False

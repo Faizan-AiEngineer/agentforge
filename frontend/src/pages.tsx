@@ -138,7 +138,7 @@ export function History() {
   return <section className="workspace"><PageTitle title="Execution History" description="Inspect persisted runs, node outputs, and generated artifacts." />
     {query.isError && <Notice error={query.error} />}<article className="card"><div className="section-head"><div><h2>Workflow runs</h2><p>{query.data?.total ?? 0} runs</p></div>
       <select aria-label="Filter by status" value={status} onChange={event => { setStatus(event.target.value); setOffset(0) }}><option value="">All statuses</option>
-      {['QUEUED','RUNNING','WAITING_APPROVAL','SUCCEEDED','FAILED','TIMED_OUT','CANCELLED'].map(item => <option key={item} value={item}>{titleCase(item)}</option>)}</select></div>
+      {['QUEUED','RUNNING','WAITING_APPROVAL','SUCCEEDED','FAILED','TIMED_OUT','CANCELLED','REJECTED'].map(item => <option key={item} value={item}>{titleCase(item)}</option>)}</select></div>
     {query.isPending ? <Loading /> : query.data?.items.length ? <ExecTable items={query.data.items} />
       : <Empty title="No runs to display" detail="Executed workflows and their results appear here." />}
     {query.data && <Pager {...query.data} change={setOffset} />}</article></section>
@@ -151,14 +151,21 @@ export function Details() {
   const [error, setError] = useState<unknown>(null)
   const navigate = useNavigate()
   const data = query.data
+  const [acting, setActing] = useState(false)
+  const actionInFlight = useRef(false)
   const selected = data?.nodes.find(step => step.node_id === active) ?? data?.nodes.find(step => step.status !== 'SKIPPED')
   const canCancel = data && ['QUEUED','RUNNING','WAITING_APPROVAL'].includes(data.status)
-  async function action(operation: string) {
+  async function action(operation: 'cancel' | 'resume' | 'retry') {
+    if (actionInFlight.current) return
+    actionInFlight.current = true
+    setActing(true)
+    setError(null)
     try {
       const result = await request<Execution>('/executions/' + id + '/' + operation, 'POST')
       if (result.id !== id) navigate('/executions/' + result.id)
       await query.refetch()
     } catch (error) { setError(error) }
+    finally { actionInFlight.current = false; setActing(false) }
   }
   async function downloadArtifact(identifier: string, filename: string) {
     setError(null)
@@ -181,8 +188,11 @@ export function Details() {
   if (query.isPending) return <section className="workspace"><Loading /></section>
   if (!data) return <section className="workspace"><Notice error={query.error} /></section>
   return <section className="workspace"><PageTitle title={data.workflow_name} description={'Run ' + data.id.slice(0, 8) + ' · Draft revision ' + data.revision}>
-    <Link className="button" to="/executions">All runs</Link>{canCancel ? <button className="button" onClick={() => action('cancel')}>Cancel run</button>
-    : data.status !== 'SUCCEEDED' && <button className="button primary" onClick={() => action('retry')}>Retry pinned version</button>}</PageTitle>
+    <Link className="button" to="/executions">All runs</Link>
+    {canCancel && <button className="button" disabled={acting} onClick={() => action('cancel')}>Cancel run</button>}
+    {data.can_resume && <button className="button primary" disabled={acting} onClick={() => action('resume')}>Resume failed node</button>}
+    {data.can_rerun &&
+      <button className="button" disabled={acting} onClick={() => action('retry')}>Start new run from pinned version</button>}</PageTitle>
     {error != null && <Notice error={error} />}{data.error && <Notice error={data.error} />}
     <div className="run-summary card"><Badge value={data.status} /><span>Trigger <strong>{titleCase(data.source)}</strong></span>
       <span>Started <strong>{date(data.started, true)}</strong></span><span>Duration <strong>{duration(data.started, data.ended)}</strong></span></div>
@@ -199,7 +209,9 @@ export function Details() {
     <article className="card timeline"><div className="section-head"><div><h2>Node timeline</h2><p>Select a node to inspect its inputs and output.</p></div><Activity size={19} /></div>
       <div className="timeline-grid"><div>{data.nodes.map(step => <button key={step.node_id} className={'step-row' + (selected?.node_id === step.node_id ? ' chosen' : '')}
         onClick={() => setActive(step.node_id)}><span>{data.definition.nodes.find(n => n.id === step.node_id)?.label ?? step.node_id}
-        <small>{step.attempts} attempt{step.attempts === 1 ? '' : 's'} · {duration(step.started, step.ended)}</small></span><Badge value={step.status} /></button>)}</div>
+        <small>{step.attempts} attempt{step.attempts === 1 ? '' : 's'} · {duration(step.started, step.ended)}</small></span><Badge value={step.status} /></button>)}
+        {canCancel && data.definition.nodes.filter(node => !data.nodes.some(step => step.node_id === node.id)).map(node =>
+          <div className="step-row" key={node.id}><span>{node.label}<small>0 attempts</small></span><Badge value="PENDING" /></div>)}</div>
         <div className="step-preview">{selected ? <><h3>{data.definition.nodes.find(n => n.id === selected.node_id)?.label}</h3>{selected.error && <Notice error={selected.error} />}
           <h4>Input</h4><pre>{JSON.stringify(selected.inputs, null, 2)}</pre><h4>Output {selected.port && <span>· {selected.port}</span>}</h4><pre>{JSON.stringify(selected.output, null, 2)}</pre></>
           : <p className="muted">Waiting for node checkpoints.</p>}</div></div></article>
@@ -263,7 +275,10 @@ export function ApprovalPage() {
   const capabilities = useApi<Capabilities>('/system/capabilities')
   const [reviewerKey, setReviewerKey] = useState('')
   const toast = useToast(state => state.show)
+  const decisionInFlight = useRef(false)
   async function decide(id: string, decision: string) {
+    if (decisionInFlight.current) return
+    decisionInFlight.current = true
     setBusy(id)
     setError(null)
     try {
@@ -272,7 +287,7 @@ export function ApprovalPage() {
       setReviewerKey('')
       await query.refetch()
       toast('Decision recorded')
-    } catch (error) { setError(error) } finally { setBusy('') }
+    } catch (error) { setError(error) } finally { decisionInFlight.current = false; setBusy('') }
   }
   return <section className="workspace"><PageTitle title="Approvals" description="Review proposed actions from paused workflow runs." />
     {capabilities.data?.approval_requires_key && <div className="filter-line"><label className="form-stack">Reviewer key
@@ -283,9 +298,9 @@ export function ApprovalPage() {
       <div className="pad"><div className="meta-line"><span>{item.reviewer}</span><span>Requested {date(item.created, true)}</span><span>Expires {date(item.expires, true)}</span></div>
       <details><summary>Review workflow context</summary><pre>{JSON.stringify(item.context, null, 2)}</pre></details>
       <div className="actions"><Link className="button" to={'/executions/' + item.execution_id}>Inspect run</Link>{!item.decision && <>
-        <button className="button" disabled={busy === item.id} onClick={() => decide(item.id, 'REQUEST_CHANGES')}>Request changes</button>
-        <button className="button" disabled={busy === item.id} onClick={() => decide(item.id, 'REJECT')}>Reject</button>
-        <button className="button primary" disabled={busy === item.id} onClick={() => decide(item.id, 'APPROVE')}><Check size={16} /> Approve</button></>}</div></div>
+        <button className="button" disabled={!!busy} onClick={() => decide(item.id, 'REQUEST_CHANGES')}>Request changes</button>
+        <button className="button" disabled={!!busy} onClick={() => decide(item.id, 'REJECT')}>Reject</button>
+        <button className="button primary" disabled={!!busy} onClick={() => decide(item.id, 'APPROVE')}><Check size={16} /> Approve</button></>}</div></div>
     </article>)}</div>}
     {!query.isPending && !query.data?.items.length && <article className="card"><Empty title="Approval inbox is empty" detail="Workflow review requests will appear when an approval node pauses a run." /></article>}
     {query.data && <Pager {...query.data} change={setOffset} />}</section>

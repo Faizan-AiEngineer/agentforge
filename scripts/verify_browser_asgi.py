@@ -11,6 +11,7 @@ from backend.app.main import create_app
 from backend.app.runtime import PROJECT, Settings
 from evaluation.benchmark import json_file
 from scripts.browser_smoke import completion_smoke, open_page, smoke
+from scripts.resumption_smoke import capture_resumption
 from scripts.seed_demo import generate
 
 ORIGIN = "http://127.0.0.1:4173"
@@ -41,7 +42,7 @@ class InProcessRequests:
         return BrowserReply(self.client.post(url, headers=headers, **body))
 
 
-def verify(client, channel, downloads):
+def verify(client, channel, downloads, resumption_screenshots=None):
     # Run the production bundle and real ASGI application without binding a TCP listener.
     def route_to_app(route):
         request = route.request
@@ -72,8 +73,12 @@ def verify(client, channel, downloads):
             assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
             page.get_by_role("button", name="Open navigation").click()
             expect(page.get_by_role("navigation", name="Workspace navigation")).to_be_visible()
+            resumption = None
+            if resumption_screenshots is not None:
+                page.set_viewport_size({"width": 1440, "height": 1080})
+                resumption = capture_resumption(page, ORIGIN, client, resumption_screenshots)
             assert not errors, errors
-            return download
+            return download, resumption
         finally:
             browser.close()
 
@@ -83,6 +88,7 @@ def main():
     parser.add_argument("--runtime", type=Path, required=True)
     parser.add_argument("--channel", default="chrome")
     parser.add_argument("--winloop", action="store_true")
+    parser.add_argument("--resumption-screenshots", type=Path)
     args = parser.parse_args()
     if args.winloop:
         import winloop
@@ -101,9 +107,13 @@ def main():
     downloads = settings.root / "browser-downloads"
     downloads.mkdir(exist_ok=True)
     with TestClient(create_app(settings), base_url=ORIGIN) as client, ThreadPoolExecutor(max_workers=1) as thread:
-        download = thread.submit(verify, client, args.channel, downloads).result()
+        download, resumption = thread.submit(
+            verify, client, args.channel, downloads, args.resumption_screenshots,
+        ).result()
     evidence = {"transport": "ASGI", "browser": args.channel, "workflow_journey": "VERIFIED",
                 "webhook_schedule_monitoring_and_rejection": "VERIFIED", "download": download}
+    if resumption:
+        evidence["resumption"] = resumption
     json_file(settings.root, "browser-summary.json", evidence)
     print(evidence, flush=True)
 

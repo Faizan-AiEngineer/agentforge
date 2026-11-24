@@ -53,6 +53,8 @@ from .runtime import (
     decide,
     prepare_root,
     queue,
+    resumable_step,
+    resume_failed,
     secret_values,
 )
 from .security import MAX_BODY, json_size, redact
@@ -201,6 +203,10 @@ def stats(session):
             "node_usage": [{"node": label, "runs": count} for label, count in usage],
             "pending_approvals": totals.get("WAITING_APPROVAL", 0),
             "recent": [view(row, "key", "payload", "deadline") for row in recent]}
+
+
+def replayable_graph(definition):
+    return all((spec := REGISTRY.get(item["type"])) and spec.replay for item in definition["nodes"])
 
 
 def create_app(settings=None):
@@ -411,7 +417,10 @@ def create_app(settings=None):
                                .order_by(Step.started.is_(None), Step.started)).all()
         approvals = session.scalars(select(Approval).where(Approval.execution_id == execution_id)).all()
         artifacts = session.scalars(select(Artifact).where(Artifact.execution_id == execution_id)).all()
-        return {**view(run, "key", "deadline"), "definition": session.get(Version, run.version_id).definition,
+        definition = session.get(Version, run.version_id).definition
+        return {**view(run, "key", "deadline"), "definition": definition,
+                "can_resume": resumable_step(run, definition, steps) is not None,
+                "can_rerun": run.status in {"FAILED", "TIMED_OUT", "CANCELLED"} and replayable_graph(definition),
                 "nodes": [view(step) for step in steps], "approvals": [view(approval) for approval in approvals],
                 "artifacts": [view(item) for item in artifacts]}
 
@@ -432,14 +441,23 @@ def create_app(settings=None):
         save(session)
         return view(run, "key", "payload", "deadline")
 
+    @api.post("/executions/{execution_id}/resume", status_code=202)
+    async def resume(execution_id: str, session=Depends(db)):
+        run = model_or_404(session, Execution, execution_id)
+        version = session.get(Version, run.version_id)
+        steps = session.scalars(select(Step).where(Step.execution_id == run.id)).all()
+        if not resume_failed(session, run, version.definition, steps):
+            raise HTTPException(409, "Only a failed run with a replayable failed node can resume")
+        save(session)
+        return view(run, "key", "payload", "deadline")
+
     @api.post("/executions/{execution_id}/retry", status_code=202)
     async def retry(execution_id: str, session=Depends(db)):
         run = model_or_404(session, Execution, execution_id)
         if run.status not in {"FAILED", "TIMED_OUT", "CANCELLED"}:
             raise HTTPException(409, "Retry is available for failed, timed out or cancelled runs")
         version = session.get(Version, run.version_id)
-        if any(not REGISTRY.get(item["type"]) or not REGISTRY[item["type"]].replay
-               for item in version.definition["nodes"]):
+        if not replayable_graph(version.definition):
             raise HTTPException(409, "This workflow contains an external write. Review the provider first.")
         clone = queue(session, session.get(Workflow, run.workflow_id), "retry", run.payload, pinned=version)
         save(session)

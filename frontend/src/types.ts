@@ -30,7 +30,7 @@ export type Approval = {
   id: string; workflow_name: string; execution_id: string; action: string; context: Json
   decision: string | null; reviewer: string; created: number; expires: number
 }
-export type ExecutionDetails = Execution & { definition: Graph; nodes: Step[]; approvals: Approval[]; artifacts: Artifact[] }
+export type ExecutionDetails = Execution & { can_resume: boolean; can_rerun: boolean; definition: Graph; nodes: Step[]; approvals: Approval[]; artifacts: Artifact[] }
 export type Page<T> = { items: T[]; total: number; offset: number; limit: number }
 export type Metrics = {
   workflows: number; total_executions: number; completed: number; statuses: Record<string, number>

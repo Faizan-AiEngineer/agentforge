@@ -226,7 +226,7 @@ a.quick-row:hover { background: var(--panel-raised); }
 .badge-succeeded, .badge-approve { color: #84e3bf; background: #1a3a35; }
 .badge-waiting_approval, .badge-retrying, .badge-request_changes { color: #ffd08e; background: #42332a; }
 .badge-running, .badge-queued { color: #a5c7ff; background: #253a57; }
-.badge-failed, .badge-timed_out, .badge-reject, .badge-expired { color: #ffc0c9; background: #472a39; }
+.badge-failed, .badge-timed_out, .badge-reject, .badge-rejected, .badge-expired { color: #ffc0c9; background: #472a39; }
 
 .empty { display: grid; place-items: center; align-content: center; gap: 9px; text-align: center; min-height: 170px; padding: 20px; }
 .empty p { color: var(--muted); max-width: 400px; font-size: .92rem; }

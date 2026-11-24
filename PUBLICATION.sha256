@@ -1,7 +1,7 @@
 # AgentForge publication manifest
-# created: 2026-11-22T05:52:23+00:00
-# payload_files: 141
-# payload_bytes: 2261332
+# created: 2026-11-24T11:32:05+00:00
+# payload_files: 149
+# payload_bytes: 2610255
 # sha256  bytes  path
 6474b64872513688eeab4ccef3bc90400c43721c52d0aaac3977506e099c788c  94  .dockerignore
 c58b9a275e53acf3d8d90d76b9911aef706440b910925429ec1afe86825d8b0d  579  .env.example
@@ -10,7 +10,7 @@ c58b9a275e53acf3d8d90d76b9911aef706440b910925429ec1afe86825d8b0d  579  .env.exam
 fab0aa8a86de53ea14d00c6d2722ca13477efc21dac23c1d92aa55386395a9be  218  .gitignore
 e969f6a474f860b252832ba77c14082df281e1c3ee9f1aad4db17cc59ce79073  208  CHANGELOG.md
 5390c9988c6684d28fe10591f92f17f3ab9291b3a0f50f1420936bc0910ae2b1  1218  PROJECT_STATUS.md
-e953bd74e85e04d27e05b2f62a2015955be7c9ce961b1931bae40862fbc24d9d  7344  README.md
+1d097fe4bb882ec26fd6b6bb164305bccafff94b5d036db916d747cc5f74134e  7822  README.md
 b34e6c782301866a3d7169d2ecfab865a4f2c830bf2e41459d9f2d179ad511e4  812  backend/Dockerfile
 b9afba848cd9d9e942e80d6622d729f69bd8fdd557db37c4aa62c22ef4b20f6f  99  backend/alembic.ini
 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b  1  backend/app/__init__.py
@@ -22,9 +22,9 @@ b2ea83f4d5a47ee4ba03c7f89ee211b1e4f643bc87be4b86c2b22648323d8179  2061  backend/
 6b2d82b823140b23d49f15179be5d2d635b68c8cee0a772a54468741ae26ca80  6177  backend/app/db.py
 ac1f92865cdb9b06cce1808882e45145c1c3de800246f95bd1ae1a073111a4ed  4311  backend/app/executors.py
 51e9d6f18f72e403a5efafab2fd7a573adc7978a91a190c2e0225a11770e503b  4446  backend/app/graph.py
-844ecd6a6030d5139c10cd29eb274d3c343dc13f412b482e2ed3cd54aa2b8252  28195  backend/app/main.py
+d4b4d51a6743efe454f7bc0a0e559678bc4bc2ec786dfad88d37da368b1414f7  29093  backend/app/main.py
 d26b9791854b932c1e7f6a9c7dfaab57589c0cfc9cc2d39ab7e1f88a5c189b04  22010  backend/app/nodes.py
-7ee47a3c639497baf62952895b1a4a91b6a459516b5cef5b523002867adcaf3e  19254  backend/app/runtime.py
+0530d456ba269220d94531f4ad8d43a0b40a0b2feb478d5274e88b27f1f103eb  21582  backend/app/runtime.py
 97641eff5e1056db3b2b6c6360692955c84789f6b70d9457f3218458257af781  5591  backend/app/security.py
 b7cee3f4e40abffe6de540933b9bf897cd8e5e910dd4bc907d492d713eb27bce  3267  backend/app/special_nodes.py
 1772b40d449ce7f98db7e42fd45e05656d5acea8f5ef43342212887591a43e15  5399  backend/app/templates.py
@@ -35,15 +35,16 @@ f53297b001849a01bf7d31c58c0b668a08e9f2e9deee443bb8ec65712c8e4623  898  backend/m
 c9172c197735c2bf28cefee92cf551d22410a8e925a1bda015e760eeb3f036bb  747  backend/migrations/versions/0002_executor.py
 6ec95781bfa937243b6136186bd86285a139db3ca40f9fb1bf041d104930cf5d  51  backend/requirements-distributed.txt
 664712f3c98308ba9ea7095c5fa551914a92e4d85c573b6b05ec29846dd02119  230  backend/requirements.txt
-a9d7aab7ad599a4298793ab76a20bac1eedb02c60a4288f0ea7eecb376373f7f  1528  backend/tests/conftest.py
+70c2dafa85f03034a49d2725117047881fa4e8ae057d8d5352743368ea5cc496  1540  backend/tests/conftest.py
 09ae7362452fcf38d884a63eef2c5759149fb4fbafe8da82fb577c2961cb2eaa  4924  backend/tests/test_ai_providers.py
 258db99ebe568e613c93cb11449b84ba150406e58c1a65fb408400351be3d072  11452  backend/tests/test_execution.py
 36a534c4ef5479f0626a16dcda4aceb22465160fe446abc3d0dabe36a12008fa  3390  backend/tests/test_nodes.py
 f59f42b78c46371b7636d2c3fdda8817b9fe1c168801d4616e9eaa801eb0eda6  4904  backend/tests/test_recovery.py
 e362cfdb39a8d6e4928be39aa2e09818a4e087124a4f653a1c3510abf2756eba  3737  backend/tests/test_security.py
+39433d6cd0408df5e268287e405e684ad6de787dfec990944dced1fb2f607e5c  16921  backend/tests/test_workflow_resumption_idempotency.py
 6733f7e42193a06babaa5e6024f186718067de336ca49add730fb833a340b653  2484  docker-compose.distributed.yml
 b06f36846a8ec6db88c22aae50d3076e9104edb811877cc96ade4a9c505a6c9a  705  docker-compose.yml
-0aa4c0d3458e92b41f6faa18b0c5c09e78315fb1d12fc1cc14150d6bdae3397c  2619  docs/API_REFERENCE.md
+7c4ee56eab0c96035de20b2d1325f6715bfa7a1f9a846fa113dc9ace26bf5b56  2843  docs/API_REFERENCE.md
 39300faed1a57fce6b0969050b1c6e668912eb4b4b1568b8c11d72fcff0cf2ad  3540  docs/ARCHITECTURE.md
 cf31fda9f1e4a656438627ad05054077bf5110952d765c4ff3753dd75ab8b117  964  docs/BENCHMARKS.md
 59d6bd0fb9d9f1e34507b1223a72832ba4ab336bc3162ff821711980c85c070f  1247  docs/CASE_STUDY.md
@@ -57,7 +58,8 @@ e81bf6c76f12f66a5d0c4f8963f065953906455d91eda5745e2f1131102b5be5  5832  docs/FIN
 70b9049805e4b00ce7a0a2fb9977dc71624504f7895da866a45aab86581e59a8  3270  docs/SECURITY.md
 45581fed4190bbc725f80ffc428e13211c7dca9c34a05eb1043008d3ea15d02e  1155  docs/TECHNOLOGY_DECISIONS.md
 9a764aee4de4f81a20de3d336f3805921152f4b259bf85ee4ba06427bf67e0f2  1134  docs/TROUBLESHOOTING.md
-04fd23862a5a7aa079dbab8bf35af8c25b749c67adfb5f4afcf85c1edbfe5a26  2597  docs/WORKFLOW_ENGINE.md
+31943271f4610cf3bce117b453505ca2ccf612d59caff835169483b1017bc853  3160  docs/WORKFLOW_ENGINE.md
+790165aa7bccef876d744f87856e1b8fc394f3b2628d02bec14323b4cb17f380  9802  docs/WORKFLOW_RELIABILITY.md
 543cbe66c43d16fd1396948b78149ce3e647345d2aced8794a5a615bf4b6fc61  2202  docs/sample-agentforge-report.pdf
 a8675cf09aeebd8bb6961be66993b20a1e80291ac453328e0e8b3710b922c922  86  docs/samples/orders.csv
 54d0085d1cd639b3f3179893a492b3ea6966f932d620711c617fc28ab3543a25  5056  docs/samples/sales-leads.xlsx
@@ -73,6 +75,10 @@ e7ce5ebe62157cc3b4b6fc974debcfbe689485fe8424cddbd17ea05cc8fb6930  250301  docs/s
 10cbb98e929124e44b6bf0d8871576fe81a716881e5ac91b94e2d9ee56626731  155867  docs/screenshots/10-monitoring.png
 d8d4f951cbf2e4ff44e67caa894ffa479d80583bae94d8102174e25f2d210c8a  81888  docs/screenshots/11-integrations.png
 2086b6bfa273e37661728f2d04db2d6008b5fb0c333b2660c7ae6a60719baa2e  54931  docs/screenshots/12-generated-report.png
+39c1d2eff32c098242e2f782376953b50956eacd06d6e573d67d50751184b3f4  112434  docs/screenshots/workflow-reliability/01-waiting-for-approval.png
+f301c2b11c81c440c7ea3817b5663d6e738dce9269359c56ae7decc49cce6e12  28793  docs/screenshots/workflow-reliability/02-history-before-approval.png
+6caccca6d14aa74bb4f5f6d740233f3a15244d4a23699c6a03882c6c0fc40c66  140093  docs/screenshots/workflow-reliability/03-resumed-execution.png
+17b311376e2d129b66e501099f56ea19fd23fcfcee6387262ec1c83fef5f8be1  29004  docs/screenshots/workflow-reliability/04-final-execution-history.png
 bb3a4cde62b17bf7f009345c43ce918f94213ec9bc7694ef0062a76a2db987ef  11947  evaluation/benchmark.py
 6b0fb6527ee4497383a868bd2fa24fa0afba11a5ce5519f819439dbd8aeaf702  2709  evaluation/browser_checks.py
 e1be7707d84b6c6b9fc365fe6ec9abdf31f2523f34c986c0db4e85f8f03fade5  184  evaluation/completion-verification/backend.json
@@ -121,9 +127,9 @@ fbd106c70967c8f544f9f6c145f643484939eb9a2b6eb27e93d51d16c1ae5759  23164  fronten
 be5ff6ae2d26661e13a0a02a77b06b981f53b9d4685dfdaca30a6f1064ec4603  1793  frontend/src/graph.test.ts
 2736068af2d14a349ab8803e72a0e663d830dcda2119b64c1e83b840c9014517  1824  frontend/src/graph.ts
 e38441f3d07d250c102430580ba6b132e6ea8e54df9a25e03bccd73375d5dbd9  649  frontend/src/main.tsx
-b0841910f53cbb4faba7f4091ffc20c7b679c1b174ebd2e9e849d9d2e6343e90  39365  frontend/src/pages.tsx
-527b9e9c275c9a6864a3511a5ab9717c575e861cb5d5ca80cf3d56f1d7f3b22f  21881  frontend/src/style.css
-6f48d77229bd3a1285e20ec237e7922023b21892ebd8ce46694074af43aba5d8  2337  frontend/src/types.ts
+3898eeaecabd87807d00a8d91984a04d0b54c283e8c7007d6dd38aadf7eede6c  40219  frontend/src/pages.tsx
+021196e01728eedde25602f708d2a247f469134c27dec3a8c7f357d99269c823  21898  frontend/src/style.css
+0d564fba70158d07d7ac73aae0344653f712da1e145e419207fd560825301054  2378  frontend/src/types.ts
 51cc585e285fde4b2160730bced0b394c871d5b24d0a666598f41c3d5313d2ae  3751  frontend/src/ui.tsx
 e8a3fcd68f3c5162f16d229a520570e0fbb242870e53e5abd06f785c951e4b2d  289  frontend/tsconfig.json
 8bca05ceb6eebe7e7e6014bd41129ca977b67dd58a21d3dcd2787f9f2878324b  670  frontend/vite.config.ts
@@ -132,10 +138,12 @@ f22ccad42936707c0e1249c2dc4560669a39df5007844c5a11617222f6aa056c  457  infrastru
 c670560248b975239a649844f3d43dc9c0cbb99d73a37e95e31c1c12dd7688bb  15922  scripts/browser_smoke.py
 f67072d0d3a0ba824b7d4b8d18502eeb3786384f0eed7935a68548c004908633  4302  scripts/publication_manifest.py
 8ff096ef6eb66f1ddf29dbf44f54ef6c7a77f4df145e18ed4c7521fed21f38b1  1534  scripts/release_copy.py
+7684c4f8eb9d40822f05f9a5bf357083ebe7a3559aa5637fc6b03bc2258fcca9  4375  scripts/resumption_smoke.py
 93165768ee95a504297b5b1d9eb3f7967f9188c24bf548adfef917df22d04f6c  4432  scripts/seed_demo.py
 a97c216498ab1a4ac4986a19f04572dbea5fd385be04648b72e84e6702c51d30  2192  scripts/verify_backend.py
-0996591548feb29ec0845a14fb5aa2d1d2030e1cd7247eeb8ef16b77162f1799  4713  scripts/verify_browser_asgi.py
+5034dc69061963f382ab8753479bdca74d84df3403e3bf307c2106bd5f2863d1  5247  scripts/verify_browser_asgi.py
 4107a2ec2c539546e4fc391a1f499f96bea94f9bd03530747c79a979c3708abe  2774  scripts/verify_portfolio.py
+5e1cb4af2b6f3eadd5df204928ff87393c204b67a9f4bed564e7f530d81b9fb9  1552  workflows/fixtures/approval-resumption.json
 f07990feff566aac891413dac5ab21c96c1bb268a807a75029dc6be75d070036  638  workflows/fixtures/catalog.html
 d5017775c8fc0bfc91962ee23293480c359052c75dd61541e9b1cc03588c8b02  317  workflows/fixtures/catalog2.html
 f0f4f2b5831b8aa83b1c80c7931b890c2addfc5711915427bf9a0c5b542241ef  170  workflows/fixtures/memo.txt

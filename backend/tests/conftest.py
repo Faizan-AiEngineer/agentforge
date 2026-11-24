@@ -47,7 +47,7 @@ def run(client, workflow, payload=None):
 
 
 def wait(client, identifier, desired=None, timeout=10):
-    desired = desired or {"SUCCEEDED", "FAILED", "TIMED_OUT", "CANCELLED"}
+    desired = desired or {"SUCCEEDED", "FAILED", "TIMED_OUT", "CANCELLED", "REJECTED"}
     deadline = time.monotonic() + timeout
     while True:
         data = client.get(f"{API}/executions/{identifier}").json()
